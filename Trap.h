@@ -1,3 +1,6 @@
+#ifndef TRAP_H
+#define TRAP_H
+
 #include "Cell.h"
 #include "Effect.h"
 
@@ -15,3 +18,5 @@ public:
         active = false;
     }
 };
+
+#endif // TRAP_H
