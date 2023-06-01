@@ -15,6 +15,6 @@ public:
         int y1 = std::get<1>(pos1);
         int x2 = std::get<0>(pos2);
         int y2 = std::get<1>(pos2);
-        return std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
+        return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
     }
 };
