@@ -1,8 +1,14 @@
+#include "Cell.h"
 #include "Character.h"
 #include "Trap.h"
+#include "Utils.h"
 #include <vector>
+#include <iostream>
 
 class Game {
+private:
+    std::vector<Cell*> grid;
+
 public:
     Game() {}
 
@@ -13,6 +19,7 @@ public:
             auto pos = Utils::generateRandomPos(gridWidth, gridHeight);
             grid.push_back(new Character(std::get<0>(pos), std::get<1>(pos)));
         }
+
         for (int i = 0; i < numTraps; ++i) {
             auto pos = Utils::generateRandomPos(gridWidth, gridHeight);
             grid.push_back(new Trap(std::get<0>(pos), std::get<1>(pos)));
@@ -21,19 +28,21 @@ public:
 
     void gameLoop(int maxIterations, double trapActivationDistance) {
         for (int i = 0; i < maxIterations; ++i) {
-            for (Cell* cell : grid) {
-                if (cell->getType() == 'C') {
-                    Character* character = dynamic_cast<Character*>(cell);
+            for (Cell* c : grid) {
+                if (c->getType() == 'C') {
+                    Character* character = static_cast<Character*>(c);
                     character->move(1, 0);
+
                     for (Cell* other : grid) {
                         if (other->getType() == 'T') {
-                            Trap* trap = dynamic_cast<Trap*>(other);
-                            if (Utils::calculateDistance(cell->getPos(), other->getPos()) <= trapActivationDistance && trap->isActive()) {
-                                trap->apply(*cell);
+                            Trap* trap = static_cast<Trap*>(other);
+                            if (trap->isActive() && Utils::calculateDistance(character->getPos(), trap->getPos()) <= trapActivationDistance) {
+                                trap->apply(*character);
                             }
                         }
                     }
-                    if (std::get<0>(cell->getPos()) >= gridWidth || std::get<1>(cell->getPos()) >= gridHeight) {
+
+                    if (std::get<0>(character->getPos()) >= maxIterations || std::get<1>(character->getPos()) >= maxIterations) {
                         std::cout << "Character has won the game!" << std::endl;
                         return;
                     }
@@ -42,8 +51,4 @@ public:
         }
         std::cout << "Maximum number of iterations reached. Game over." << std::endl;
     }
-
-private:
-    std::vector<Cell*> grid;
-    int gridWidth, gridHeight;
 };
