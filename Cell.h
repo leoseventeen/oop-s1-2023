@@ -1,3 +1,6 @@
+#ifndef CELL_H
+#define CELL_H
+
 #include <tuple>
 
 class Cell {
@@ -16,3 +19,5 @@ public:
 
     void setType(char type) { this->type = type; }
 };
+
+#endif // CELL_H
