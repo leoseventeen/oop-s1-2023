@@ -1,3 +1,6 @@
+#ifndef CHARACTER_H
+#define CHARACTER_H
+
 #include "Cell.h"
 
 class Character : public Cell {
@@ -10,3 +13,5 @@ public:
         setPos(x + dx, y + dy);
     }
 };
+
+#endif // CHARACTER_H
